@@ -38,4 +38,5 @@ def restartNgrok(port):
     serverUrl = get_ngrok_url()
     writeUrlToFile("./NgrokUrl.txt", serverUrl)
     Log("Completed Restart ngrok, server url: "+ serverUrl)
+    os.system('echo "Server đã được cập nhật và restart!" | wall')
     return serverUrl
