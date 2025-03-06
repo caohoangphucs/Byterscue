@@ -2,6 +2,7 @@ import os
 import InstallNgrok
 import sys
 import InstallPyFlask
+import UpdateGitHook
 modeList = {"local", "online"}
 pyFlaskPath = "./Server/Python/pyFlask.py"
 def Log(message):
@@ -28,17 +29,20 @@ def checkServerArg():
     return True
 
 def runPyflask(path, port):
-   # runIgnore("python3 " + path +" "+ port)
-    Command("python3 "+path+" "+port)
+    runIgnore("python3 " + path +" "+ port)
+    Log("Flask is up!")
+    #Command("python3 "+path+" "+port)
 def runNode(path, port):
-    
+
     Command("node" + path +" "+ port)
 def runServer(port, mode):
     Log("Server Initing...")
     if (mode == 'online'):
         InstallPyFlask.kill("Flask")
         InstallNgrok.restartNgrok(port)
+        UpdateGitHook.updateGitHook()
         runPyflask(pyFlaskPath, port)
+
     # runNode()
 if (checkServerArg()):
     userMode = sys.argv[1]
