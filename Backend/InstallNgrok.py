@@ -28,7 +28,6 @@ def writeUrlToFile(filePath, url):
         Log("Ngrok Url writed to "+filePath)
 def restartNgrok(port):
     Log("Restarting ngrok")
-    killNgrok()
     runNgrok(port)
     Log("Waitng for url...")
     for _ in range(10):  # Retry up to 10 times

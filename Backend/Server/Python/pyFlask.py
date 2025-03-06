@@ -33,7 +33,10 @@ def receive_data():
     
     print("Dữ liệu nhận được:", data)  # Debug trong terminal
     return jsonify({"result": data})
-
+@app.route('/github-webhook', methods=['POST'])
+def resetServer():
+    os.system('python3 ../../UpdateServer.py online ' + str(userPort))
+    return jsonify({"status": "Server reset initiated"})
 def caculate(a, b):
     return a + b
 

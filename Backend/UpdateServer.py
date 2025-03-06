@@ -35,10 +35,14 @@ def runPyflask(path, port):
 def runNode(path, port):
 
     Command("node" + path +" "+ port)
+def updateSrc():
+    Command("git pull origin main")
 def runServer(port, mode):
     Log("Server Initing...")
     if (mode == 'online'):
         InstallPyFlask.kill("Flask")
+        InstallNgrok.killNgrok()
+        updateSrc()
         InstallNgrok.restartNgrok(port)
         UpdateGitHook.updateGitHook()
         runPyflask(pyFlaskPath, port)
