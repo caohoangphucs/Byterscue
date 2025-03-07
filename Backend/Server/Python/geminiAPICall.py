@@ -1,6 +1,5 @@
 import google.generativeai as genai
 import textwrap
-import Speech
 import Utils
 # Hàm định dạng Markdown (tùy chọn)
 def to_markdown(text):
@@ -26,6 +25,6 @@ while (True):
     findResult = to_markdown(response.text)
     findResult = Utils.remove_special_chars(findResult)
     print("Gemini:",findResult)
-    Speech.toSpeech(findResult)
+  
 
 

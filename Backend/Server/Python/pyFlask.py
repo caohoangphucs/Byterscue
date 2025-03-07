@@ -35,8 +35,11 @@ def receive_data():
     return jsonify({"result": data})
 @app.route('/github-webhook', methods=['POST'])
 def resetServer():
-    os.system('python3 ../../UpdateServer.py online ' + str(userPort))
-    return jsonify({"status": "Server reset initiated"})
+    updatePath = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../UpdateServer.py"))
+    os.system('python3 ' + updatePath + " online " + str(userPort))
+    return jsonify({"status": "Server reset initiated", "path": updatePath})
+    
+
 def caculate(a, b):
     return a + b
 

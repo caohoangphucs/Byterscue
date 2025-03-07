@@ -3,7 +3,7 @@ import InstallNgrok
 import sys
 import InstallPyFlask
 import UpdateGitHook
-modeList = {"local", "online"}
+modeList = {"local", "online", "shutdown"}
 pyFlaskPath = "./Server/Python/pyFlask.py"
 def Log(message):
     os.system("echo "+message)
@@ -20,6 +20,7 @@ def isValidPort(port):
         return False
     
 def checkServerArg():
+    if (sys.argv[1] == "shutdown"): return True
     if (len(sys.argv) < 2 or sys.argv[1] not in modeList):
         Log("Server Init need Mode to run ('local' / 'online')")
         sys.exit(1)
@@ -37,14 +38,23 @@ def runNode(path, port):
     Command("node" + path +" "+ port)
 def updateSrc():
     Command("git pull origin main")
+def shutdown():
+    InstallPyFlask.kill("Flask")
+    InstallNgrok.killNgrok()
 def runServer(port, mode):
+    if (mode == "shutdown"):
+        shutdown()
+        return
     Log("Server Initing...")
     if (mode == 'online'):
         InstallPyFlask.kill("Flask")
-        InstallNgrok.killNgrok()
         updateSrc()
-        InstallNgrok.restartNgrok(port)
-        UpdateGitHook.updateGitHook()
+        if not InstallNgrok.isRunning():
+            InstallNgrok.killNgrok()
+            InstallNgrok.restartNgrok(port)
+            UpdateGitHook.updateGitHook()
+        else:
+            Log("Ngrok is running, skip update url")
         runPyflask(pyFlaskPath, port)
 
     # runNode()

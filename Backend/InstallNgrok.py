@@ -2,6 +2,7 @@ import requests
 import json
 import os
 import time
+urlFilePath = "./NgrokUrl.txt"
 def Log(message):
     os.system("echo "+message)
 def Command(command):
@@ -17,6 +18,15 @@ def get_ngrok_url():
         return public_url
     except Exception as e:
         return None
+def isRunning():
+    try:
+        response = requests.get("http://127.0.0.1:4040/api/tunnels")
+        if response.status_code == 200:
+            return True
+        else:
+            return False
+    except requests.ConnectionError:
+        return False
 def killNgrok():
     Command("pkill ngrok")
     Command("echo Killed all ngrok.\n")
@@ -26,6 +36,14 @@ def writeUrlToFile(filePath, url):
     with open(filePath, 'w', ) as file:
         file.write(url)
         Log("Ngrok Url writed to "+filePath)
+def getCurrentUrl():
+    if os.path.exists(urlFilePath):
+        with open(urlFilePath, 'r') as file:
+            url = file.read().strip()
+            return url
+    else:
+        Log("Url file not found.")
+        return None
 def restartNgrok(port):
     Log("Restarting ngrok")
     runNgrok(port)
@@ -36,7 +54,7 @@ def restartNgrok(port):
             break
         time.sleep(1)
     serverUrl = get_ngrok_url()
-    writeUrlToFile("./NgrokUrl.txt", serverUrl)
+    writeUrlToFile(urlFilePath, serverUrl)
     Log("Completed Restart ngrok, server url: "+ serverUrl)
     os.system('echo "Server đã được cập nhật và restart!" | wall')
     return serverUrl
