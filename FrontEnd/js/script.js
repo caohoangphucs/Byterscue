@@ -1,4 +1,4 @@
-const apiUrl = "https://40b6-14-169-37-146.ngrok-free.app/api"
+const apiUrl = "http://loca"
 function printResult(response, outputID) {
     console.log("Server Respone:", response);
     document.getElementById(outputID).innerText = JSON.stringify(response, null, 2);
