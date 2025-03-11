@@ -3,6 +3,7 @@ import UpdateNgrok
 import sys
 import UpdateGitHook
 import UpdatePyFlask
+import UpdateNodejs
 from Utils import *
 
 # Read user config
@@ -16,6 +17,7 @@ pythonPort = int(serverConfig["pyPort"])
 nodejsPort = int(serverConfig["nodePort"])
 ngrokUrl = cwd + serverConfig["NgrokUrl"]
 pyFlaskPath = cwd + serverConfig["FlaskPath"]
+nodejsPath = cwd + serverConfig["NodejsPath"]
 
 def shutdown():
     kill("Flask")
@@ -33,6 +35,7 @@ def runServer(port, mode):
         else:
             writeLog(serverLog,"Server controller","Ngrok is running at: " + UpdateNgrok.get_ngrok_url() + " Skipping....")
         UpdatePyFlask.runPyflask(pyFlaskPath, port)
+        UpdateNodejs.runNode(nodejsPath, nodejsPort)
         readLog(serverLog)
 if (len(sys.argv) > 1):
     shutdown()

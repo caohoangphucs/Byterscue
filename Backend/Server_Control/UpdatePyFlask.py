@@ -1,4 +1,4 @@
 from Utils import writeLog, Command, runIgnore
 def runPyflask(path, port):
     runIgnore("python3 " + path +" "+ str(port))
-    writeLog("default", "Flask", "Flask is up!")
+    writeLog("default", "Flask", "Flask is up, listening on port 5000!")
