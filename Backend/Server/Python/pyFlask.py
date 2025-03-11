@@ -23,23 +23,28 @@ def index():
 @app.route("/<path:filename>")
 def serve_static(filename):
     return send_from_directory(frontend_path, filename)
-
 @app.route('/api', methods=['POST'])
 def receive_data():
-    data = request.form.get('text')
+    print("Received data:", request.data)  # Debug: print raw data
+    data = request.get_json(force=True)
     
     if not data:
         return jsonify({"error": "Không nhận được dữ liệu"}), 400
     
     print("Dữ liệu nhận được:", data)  # Debug trong terminal
+
+    # process some data
+    
     return jsonify({"result": data})
+@app.route('/api/python/', methods=['GET'])
+def printHello():
+    return jsonify({"message": "what sub bro"})
 @app.route('/github-webhook', methods=['POST'])
 def resetServer():
     updatePath = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../UpdateServer.py"))
     os.system('python3 ' + updatePath + " online " + str(userPort))
     return jsonify({"status": "Server reset initiated", "path": updatePath})
     
-
 def caculate(a, b):
     return a + b
 

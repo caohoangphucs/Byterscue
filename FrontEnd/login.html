@@ -137,7 +137,7 @@
                     <div class="row">
 
                         <div class="col-lg-5 col-12 mx-auto">
-                            <form class="custom-form login-form" role="form" method="post">
+                            <form id = "loginForm" action="/submit" class="custom-form login-form" role="form" method="post">
                                 <h2 class="hero-title text-center mb-4 pb-2">Đăng Nhập</h2>
 
                                 <div class="form-floating mb-4 p-0">
@@ -162,9 +162,9 @@
 
                                 <div class="row justify-content-center align-items-center">
                                     <div class="col-lg-5 col-12">
-                                        <button type="submit" class="form-control">Đăng Nhập</button>
+                                        <button type="submit" class="form-control" id="loginSubmit">Đăng Nhập</button>
                                     </div>
-
+                                    <p id = "loginResult"></p>
                                     <div class="col-lg-5 col-12">
                                         <a href="register.html" class="btn custom-btn custom-border-btn">Đăng Ký</a>
                                     </div>
@@ -188,9 +188,10 @@
 
         <!-- JAVASCRIPT FILES -->
         <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.bundle.min.js"></script>
         <script src="js/countdown.js"></script>
         <script src="js/init.js"></script>
+        <script src="FE_Script/node.js"></script>
+        <script src="FE_Script/python.js"></script>
 
     </body>
 </html>

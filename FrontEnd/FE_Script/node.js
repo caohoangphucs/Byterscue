@@ -1,5 +1,9 @@
 
 apiUrl = "http://localhost:5000/api"
+const data = {
+    formExists: false,
+    formInfo: {},
+  };
 function printResult(response, dataReceiverID) {
     console.log("Server Respone:", response);
     document.getElementById(dataReceiverID).innerText = JSON.stringify(response, null, 2);
@@ -10,10 +14,7 @@ function sendDataAndPrintRes(url, _method, _data, dataReceiverID) {
                 .then(data => printResult(data, dataReceiverID))
                     .catch(error => console.error("Lỗi ròu", error));
 }
-const data = {
-    formExists: false,
-    formInfo: {},
-  };
+
 document.getElementById("loginForm").addEventListener("submit", function(event) {
     event.preventDefault();
     let formData = new FormData(this);

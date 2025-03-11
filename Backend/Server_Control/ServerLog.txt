@@ -1,0 +1,9 @@
+Server controller> 2025-03-11 23:28:12.484142
+Server controller> Server Initing...
+Killer> Killed Flask
+Ngrok> Restarting ngrok
+Ngrok> Started ngrok with port:5000
+Ngrok> Waitng for url...
+Ngrok> Ngrok Url writed to ./NgrokUrl.txt
+Ngrok> Completed Restart ngrok, server url: https://b59b-14-187-41-32.ngrok-free.app
+Flask> Flask is up!
