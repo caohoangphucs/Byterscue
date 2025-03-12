@@ -1,0 +1,14 @@
+Server controller> 2025-03-12 17:25:26.256783
+Server controller> Server Initing...
+Killer> Killed Flask
+Ngrok> Restarting ngrok
+Ngrok> Started ngrok with port:5000
+Ngrok> Waitng for url...
+Ngrok> Ngrok Url writed to /home/phucdeptrai/ByteForce-Hackathon2025/Backend/Server_Control/ngrok_url.txt
+Ngrok> Completed Restart ngrok, server url: https://8d63-14-187-41-32.ngrok-free.app
+Flask> Flask is up, listening on port 5000!
+Node> Node is up, listing on port 6000!
+Killer> Killed Flask
+Killer> Killed ngrok
+Killer> Killed node
+Server controller> Server is down !

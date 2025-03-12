@@ -1,6 +1,0 @@
-Server controller> 2025-03-12 00:25:17.541158
-Server controller> Server Initing...
-Killer> Killed Flask
-Server controller> Ngrok is running at: https://b59b-14-187-41-32.ngrok-free.app Skipping....
-Flask> Flask is up, listening on port!
-Node> Node is up, listing on port 6000!

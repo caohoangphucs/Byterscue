@@ -21,7 +21,8 @@ def getcwd():
     parent_directory = os.path.dirname(script_directory)  # Lùi lại 1 cấp
     return parent_directory + "/"
 configPath = "Server_Control/ServerConfig.conf"
-
+def getConfigKey(key_name):
+    return getcwd() + parse_config(getcwd()+"Server_Control/ServerConfig.conf")[key_name] 
 def parse_config(file_path):
     config_dict = {}
     with open(file_path, "r", encoding="utf-8") as file:
@@ -42,7 +43,7 @@ def parse_config(file_path):
 def writeLog(logPath, fromModule, message, ):
     
     if (logPath=="default"): 
-        defaultPath = getcwd() + parse_config(getcwd()+"Server_Control/ServerConfig.conf")["logFile"] 
+        defaultPath = getConfigKey("logFile")
     else:
         defaultPath = logPath
     message = fromModule + "> " + message + "\n"
