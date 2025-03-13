@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS  
 import sys
 import os
-
+from Utils import *
 # Xác định đường dẫn tuyệt đối đến thư mục FrontEnd
 frontend_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../FrontEnd"))
 print("Frontend path:", frontend_path)  # Debug: kiểm tra đường dẫn
@@ -33,6 +33,12 @@ def receive_data():
     
     print("Dữ liệu nhận được:", data)  # Debug trong terminal
     return jsonify({"result": data})
+@app.route('/log', methods=['GET'])
+def get_server_log():
+    logPath = getConfigKey("logFile")
+    result = ""
+    with open(logPath, "r") as file:
+        return file.read()
 @app.route('/github-webhook', methods=['POST'])
 def resetServer():
     updatePath = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../Server_Control/UpdateServer.py"))
