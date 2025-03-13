@@ -10,6 +10,7 @@ pip install requests --break-system-packages -q
 pip install flask --break-system-packages -q
 pip install flask_cors --break-system-packages -q
 pip install pathlib --break-system-packages -q
+pip install -U -q "google-generativeai" -break-system-packages -q
 cd Server/NodeJs
 npm install --yes
 cd ../../
