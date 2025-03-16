@@ -4,11 +4,12 @@ import sys
 import UpdateGitHook
 import UpdatePyFlask
 import UpdateNodejs
+import UpdateVite
 from Utils import *
 
 # Read user config
 modeList = {"local", "online", "shutdown"}
-configPath = "Server_Control/ServerConfig.conf"
+configPath = "Backend/Server_Control/ServerConfig.conf"
 serverConfig = parse_config(getcwd()+configPath)
 cwd = getcwd()
 serverLog = cwd + serverConfig["logFile"]
@@ -18,17 +19,21 @@ nodejsPort = int(serverConfig["nodePort"])
 ngrokUrl = cwd + serverConfig["ngrokUrl"]
 pyFlaskPath = cwd + serverConfig["flaskPath"]
 nodejsPath = cwd + serverConfig["nodejsPath"]
+vitePort = int(serverConfig["vitePort"])
+vitePath = cwd + serverConfig["vitePath"]
 def serverLogInit():
     clearFile(serverLog)
     writeLog(serverLog, "Server controller", str(getCurTime()))
     writeLog(serverLog,"Server controller", "Server Initing...")
-def shutdown():
+def shutdown(port):
     kill("Flask")
     kill("ngrok")
     kill("node")
+    kill("vite")
+    Command("sudo lsof -i :"+str(port)+" | awk '{print $2}' | grep -o '[0-9]*' | xargs sudo kill -9")
 def runServer(port, mode):
     if (len(sys.argv) > 1):
-        shutdown()
+        shutdown(port)
         writeLog("default", "Server controller", "Server is down !")
         readLog(serverLog)
         sys.exit()
@@ -40,8 +45,10 @@ def runServer(port, mode):
             UpdateNgrok.restartNgrok(port)
         else:
             writeLog(serverLog,"Server controller","Ngrok is running at: " + UpdateNgrok.get_ngrok_url_PATH() + " Skipping....")
+        UpdateVite.runVite(vitePath, vitePort)
         UpdatePyFlask.runPyflask(pyFlaskPath, port)
         UpdateNodejs.runNode(nodejsPath, nodejsPort)
+        
         readLog(serverLog)
 
-runServer(pythonPort, serverMode)
+runServer(vitePort, serverMode)

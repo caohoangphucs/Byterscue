@@ -19,10 +19,11 @@ def isValidPort(port):
 def getcwd():
     script_directory = os.path.dirname(os.path.abspath(__file__))  # Thư mục chứa script
     parent_directory = os.path.dirname(script_directory)  # Lùi lại 1 cấp
-    return parent_directory + "/"
-configPath = "Server_Control/ServerConfig.conf"
+    parent_directory1 = os.path.dirname(parent_directory) 
+    return parent_directory1 + "/"
+configPath = "Backend/Server_Control/ServerConfig.conf"
 def getConfigKey(key_name):
-    return getcwd() + parse_config(getcwd()+"Server_Control/ServerConfig.conf")[key_name] 
+    return getcwd() + parse_config(getcwd()+"Backend/Server_Control/ServerConfig.conf")[key_name] 
 def parse_config(file_path):
     config_dict = {}
     with open(file_path, "r", encoding="utf-8") as file:
