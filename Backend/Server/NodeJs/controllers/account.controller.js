@@ -11,7 +11,7 @@ exports.createAccount = async (req, res) => {
 
         // Lưu dữ liệu vào MongoDB
         await newAccount.save();
-
+        
         // Gửi phản hồi thành công về frontend
         res.status(201).json({ message: "Lưu thành công!", account: newAccount });
     } catch (error) {

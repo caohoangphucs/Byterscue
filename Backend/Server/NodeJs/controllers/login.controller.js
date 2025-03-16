@@ -4,8 +4,9 @@ const Login = require('../models/account.model'); // Import model Account
 exports.login = async (req, res) => {
     try {
         const { loginName, password } = req.body;
-
+     
         // Kiểm tra tài khoản có tồn tại không
+        console.log(loginName)
         const user = await Login.findOne({ loginName });
         if (!user) {
             return res.status(400).json({ message: "Tài khoản không tồn tại!" });

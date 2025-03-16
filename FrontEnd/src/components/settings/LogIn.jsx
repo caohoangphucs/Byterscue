@@ -9,7 +9,7 @@ const LogIn = () => {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
-    yourname: "",
+    yourName: "",
     loginName: "",
     phone: "",
     password: "",
@@ -31,13 +31,13 @@ const LogIn = () => {
     try {
       if (isLogin) {
         // Đăng nhập
-        const response = await fetch("http://localhost:5001/api/login", {
+        const response = await fetch("http://localhost:5000/api/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            username: formData.loginName,
+            loginName: formData.loginName,
             password: formData.password,
           }),
         });
@@ -65,7 +65,7 @@ const LogIn = () => {
         }
       } else {
         // Đăng ký
-        const response = await fetch("http://localhost:5001/api/register", {
+        const response = await fetch("http://localhost:5000/api/register", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
