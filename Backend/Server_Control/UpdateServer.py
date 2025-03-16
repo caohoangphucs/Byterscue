@@ -44,11 +44,10 @@ def runServer(port, mode):
         if not UpdateNgrok.isRunning():
             UpdateNgrok.restartNgrok(port)
         else:
-            writeLog(serverLog,"Server controller","Ngrok is running at: " + UpdateNgrok.get_ngrok_url_PATH() + " Skipping....")
-        UpdateVite.runVite(vitePath, vitePort)
-        UpdatePyFlask.runPyflask(pyFlaskPath, port)
+            writeLog(serverLog,"Server controller","Ngrok is running at: " + UpdateNgrok.get_ngrok_url_PATH() + " Skipping....")       
+        UpdatePyFlask.runPyflask(pyFlaskPath, pythonPort)
         UpdateNodejs.runNode(nodejsPath, nodejsPort)
-        
+        UpdateVite.runVite(vitePath, vitePort)
         readLog(serverLog)
 
 runServer(vitePort, serverMode)
