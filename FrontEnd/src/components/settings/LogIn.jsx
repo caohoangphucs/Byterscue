@@ -9,7 +9,7 @@ const LogIn = () => {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
-    fullName: "",
+    yourname: "",
     loginName: "",
     phone: "",
     password: "",
@@ -31,7 +31,7 @@ const LogIn = () => {
     try {
       if (isLogin) {
         // Đăng nhập
-        const response = await fetch("http://localhost:5001/api/auth/login", {
+        const response = await fetch("http://localhost:5001/api/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -55,7 +55,7 @@ const LogIn = () => {
           navigate("/settings");
           // Reset form
           setFormData({
-            fullName: "",
+            yourname: "",
             loginName: "",
             phone: "",
             password: "",
@@ -65,21 +65,18 @@ const LogIn = () => {
         }
       } else {
         // Đăng ký
-        const response = await fetch(
-          "http://localhost:5001/api/auth/register",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              username: formData.loginName,
-              password: formData.password,
-              fullName: formData.fullName,
-              phone: formData.phone,
-            }),
-          }
-        );
+        const response = await fetch("http://localhost:5001/api/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            loginName: formData.loginName,
+            password: formData.password,
+            yourname: formData.fullName,
+            phone: formData.phone,
+          }),
+        });
 
         const data = await response.json();
 
@@ -87,7 +84,7 @@ const LogIn = () => {
           setIsLogin(true);
           setError("Đăng ký thành công! Vui lòng đăng nhập.");
           setFormData({
-            fullName: "",
+            yourname: "",
             loginName: "",
             phone: "",
             password: "",
