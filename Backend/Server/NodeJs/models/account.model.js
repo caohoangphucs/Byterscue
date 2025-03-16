@@ -1,14 +1,10 @@
-const mongoose = require('mongoose'); // Import thư viện Mongoose để làm việc với MongoDB
+const mongoose = require('mongoose');
 
-// Định nghĩa Schema (cấu trúc của collection "accounts")
-const AccountSchema = new mongoose.Schema({
-    yourName: String,   // Tên chủ tài khoản
-    loginName: String,  // Tên đăng nhập
-    password: String,   // Mật khẩu
-    phone: String       // Số điện thoại
+const accountSchema = new mongoose.Schema({
+    yourName: { type: String, required: true },
+    loginName: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    phone: { type: String, required: true }
 });
 
-// Tạo model từ Schema để thao tác với collection "accounts"
-const Account = mongoose.model('Account', AccountSchema);
-
-module.exports = Account; // Xuất model để sử dụng trong controller
+module.exports = mongoose.model('Account', accountSchema);

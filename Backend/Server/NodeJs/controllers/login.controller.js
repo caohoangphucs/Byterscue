@@ -1,4 +1,4 @@
-const Login = require('../models/login.model'); // Import model Login
+const Login = require('../models/account.model'); // Import model Account
 
 // API xử lý đăng nhập
 exports.login = async (req, res) => {
