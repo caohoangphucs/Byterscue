@@ -1,7 +1,4 @@
-
-import UpdateNgrok
 import sys
-import UpdateGitHook
 import UpdatePyFlask
 import UpdateNodejs
 import UpdateVite
@@ -16,7 +13,6 @@ serverLog = cwd + serverConfig["logFile"]
 serverMode = serverConfig["mode"]
 pythonPort = int(serverConfig["pyPort"])
 nodejsPort = int(serverConfig["nodePort"])
-ngrokUrl = cwd + serverConfig["ngrokUrl"]
 pyFlaskPath = cwd + serverConfig["flaskPath"]
 nodejsPath = cwd + serverConfig["nodejsPath"]
 vitePort = int(serverConfig["vitePort"])
@@ -27,7 +23,6 @@ def serverLogInit():
     writeLog(serverLog,"Server controller", "Server Initing...")
 def shutdown(port):
     kill("Flask")
-    kill("ngrok")
     kill("node")
     kill("vite")
     Command("sudo lsof -i :"+str(port)+" | awk '{print $2}' | grep -o '[0-9]*' | xargs sudo kill -9")
@@ -40,11 +35,7 @@ def runServer(port, mode):
     serverLogInit()
     if (mode == 'online'):
         kill("Flask")
-        updateSrc()
-        if not UpdateNgrok.isRunning():
-            UpdateNgrok.restartNgrok(port)
-        else:
-            writeLog(serverLog,"Server controller","Ngrok is running at: " + UpdateNgrok.get_ngrok_url_PATH() + " Skipping....")       
+        updateSrc()    
         UpdatePyFlask.runPyflask(pyFlaskPath, pythonPort)
         UpdateNodejs.runNode(nodejsPath, nodejsPort)
         UpdateVite.runVite(vitePath, vitePort)
