@@ -7,9 +7,14 @@ if [ "$1" = "start" ]; then
 
     echo "> Turning on Cloudflare Tunnel..."
     sudo systemctl start cloudflared
+    
+    echo "> Start nginx"
+    sudo systemctl start nginx
 
     echo "> Starting server, details below:"
     cd Backend/Server_Control/
+
+    
     python3 UpdateServer.py
 
 elif [ "$1" = "shutdown" ]; then
@@ -18,6 +23,9 @@ elif [ "$1" = "shutdown" ]; then
 
     echo "> Shutting down Cloudflare Tunnel..."
     sudo systemctl stop cloudflared
+
+    echo "> Stop nginx"
+    sudo systemctl stop nginx
 
     echo "> Shutting down server..."
     cd Backend/Server_Control/

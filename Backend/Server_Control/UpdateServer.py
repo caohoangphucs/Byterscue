@@ -39,6 +39,7 @@ def runServer(port, mode):
         UpdatePyFlask.runPyflask(pyFlaskPath, pythonPort)
         UpdateNodejs.runNode(nodejsPath, nodejsPort)
         UpdateVite.runVite(vitePath, vitePort)
+        writeLog("default"," Server controller", "Server is up!, \n Visit site https://byteforce.caohoangphuc.id.vn.")
         readLog(serverLog)
 
 runServer(vitePort, serverMode)

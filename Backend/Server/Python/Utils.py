@@ -21,13 +21,14 @@ def isValidPort(port):
     except ValueError:
         Log("Port is not valid")
         return False
-def getcwd():
+def getcwd(level=0):
     script_directory = os.path.dirname(os.path.abspath(__file__))  # Thư mục chứa script
-    parent_directory = os.path.dirname(os.path.dirname(script_directory))  # Lùi lại 1 cấp
-    return parent_directory + "/"
+    for i in range(0,level):
+        script_directory = os.path.dirname(script_directory)
+    return script_directory + "/"
 configPath = "Server_Control/ServerConfig.conf"
 def getConfigKey(key_name):
-    return getcwd() + parse_config(getcwd()+"Server_Control/ServerConfig.conf")[key_name] 
+    return getcwd(3) + parse_config(getcwd(2)+"Server_Control/ServerConfig.conf")[key_name] 
 def parse_config(file_path):
     config_dict = {}
     with open(file_path, "r", encoding="utf-8") as file:
@@ -73,3 +74,4 @@ def readLog(filePath):
         lines = file.readlines()
         for line in lines:
             print(line)
+print(getConfigKey("logFile"))

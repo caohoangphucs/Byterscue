@@ -12,10 +12,7 @@ userPort = sys.argv[1] if len(sys.argv) > 1 else 5000
 
 @app.route("/")
 def index():
-    # Kiểm tra xem file index.html có tồn tại không
-    index_path = os.path.join(frontend_path, "index.html")
-    print("Looking for index at:", index_path)  # Debug
-    return send_from_directory(frontend_path, "index.html")
+    return jsonify({"message":"Chào con đĩ, tao là python"})
 
 @app.route('/api', methods=['POST'])
 def receive_data():
