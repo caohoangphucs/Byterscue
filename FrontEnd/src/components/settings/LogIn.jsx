@@ -65,15 +65,15 @@ const LogIn = () => {
         }
       } else {
         // Đăng ký
-        const response = await fetch("http://localhost:5000/api/register", {
+        const response = await fetch("http://localhost:5000/api/accounts", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
+            yourName: formData.fullName,
             loginName: formData.loginName,
             password: formData.password,
-            yourname: formData.fullName,
             phone: formData.phone,
           }),
         });
