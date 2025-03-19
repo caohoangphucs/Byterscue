@@ -1,11 +1,12 @@
-Server controller> 2025-03-16 15:49:31.506344
+Server controller> 2025-03-19 14:46:53.819958
 Server controller> Server Initing...
 Killer> Killed Flask
-Ngrok> Restarting ngrok
-Ngrok> Started ngrok with port:4000
-Ngrok> Waitng for url...
-Ngrok> Ngrok Url writed to /home/phucdeptrai/ByteForce-Hackathon2025/Backend/Server_Control/ngrok_url.txt
-Ngrok> Completed Restart ngrok, server url: https://5b6c-42-117-13-147.ngrok-free.app
-vite> vite from /home/phucdeptrai/ByteForce-Hackathon2025/FrontEnd is up , listening on port 4000
-Flask> Flask is up, listening on port 5000!
-Node> Node is up, listing on port 6000!
+Flask> Flask is up, listening on port 4000
+Node> Node is up, listing on port 5000!
+vite> vite from /home/chiquoc26/ByteForce/FrontEnd is up , listening on port 1111
+ Server controller> Server is up!, 
+ Visit site https://byteforce.caohoangphuc.id.vn.
+Killer> Killed Flask
+Killer> Killed node
+Killer> Killed vite
+Server controller> Server is down !
