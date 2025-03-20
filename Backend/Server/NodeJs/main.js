@@ -19,7 +19,9 @@ app.post('/api/accounts', accountController.createAccount); // API tạo tài kh
 app.get('/api/accounts', accountController.getAllAccounts); // API lấy danh sách tài khoản
 // API đăng nhập
 app.post('/api/login', loginController.login);
-
+app.get('/', (req, res) => {
+    res.send('Tao là node nè con đĩ');
+});
 // Lấy PORT từ biến môi trường hoặc mặc định là 6000
 const PORT = process.env.PORT || 5000;
 

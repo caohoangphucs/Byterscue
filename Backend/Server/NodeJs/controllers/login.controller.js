@@ -18,7 +18,7 @@ exports.login = async (req, res) => {
         }
 
         // Nếu đăng nhập thành công
-        res.json({ message: "Đăng nhập thành công!", user });
+        res.json({ status: "true", user });
 
     } catch (error) {
         res.status(500).json({ message: "Lỗi server!", error });
