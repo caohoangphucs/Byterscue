@@ -1,0 +1,134 @@
+ByteForce-Hackathon2025
+Dự án này được phát triển bởi Team ByteForce IT1 với mục tiêu giúp đồng bộ mã nguồn, tự động cập nhật và triển khai (deploy) dự án trên local host thông qua Ngrok Tunnel để truy cập từ xa. Dưới đây là hướng dẫn chi tiết về cách sử dụng và cấu hình dự án.
+Tác giả: 
+Lê chí Gay (Backend - Nodejs)
+Cao Hoàng Phúc (Backend - Python )
+Phan thiện khởi (FrontEnd)
+Quách Tài lời (Frontend)
+Các gói sử dụng trong dự án:
+1. Các gói Python:
+requests: Thư viện giúp gửi các HTTP requests đơn giản.
+flask: Framework Python để xây dựng web server.
+pathlib: Thư viện làm việc với đường dẫn file và thư mục.
+2. Các công nghệ khác:
+NodeJS: Được sử dụng cho phần frontend và backend của ứng dụng.
+Nginx: Reverse proxy server, giúp chuyển hướng lưu lượng từ các địa chỉ URL đến các ứng dụng backend khác nhau.
+MongoDB: Cơ sở dữ liệu NoSQL lưu trữ thông tin cho dự án.
+Cloudflare Tunnel: Cung cấp khả năng truy cập vào server cục bộ thông qua URL công cộng mà không cần phải mở cổng trên firewall.
+1. Cách hoạt động
+Dưới đây là sơ đồ hoạt động của hệ thống:
+
+2. Cách sử dụng
+Linux
+Thêm remote repository
+Bước đầu tiên khi làm việc với dự án là bạn cần thêm remote repository từ GitHub. Hãy thực hiện các bước sau:
+
+Di chuyển vào thư mục làm việc của bạn.
+Khởi tạo một Git repository trong thư mục hiện tại.
+Thêm remote repository từ GitHub.
+bash
+Sao chép
+Chỉnh sửa
+cd <your-working-folder>  # Di chuyển vào thư mục làm việc
+git init  # Khởi tạo Git repository trong thư mục
+git remote add origin https://caohoangphucs/ByteForce-Hackathon2025.git  # Thêm remote repository từ GitHub
+Clone dự án
+Để clone dự án về máy tính của bạn, hãy chạy lệnh dưới đây:
+
+bash
+Sao chép
+Chỉnh sửa
+git pull origin main  # Lấy mã nguồn mới nhất từ nhánh chính của repository
+Cài đặt và cấu hình môi trường
+Sau khi đã clone dự án, bạn cần cài đặt môi trường và các phụ thuộc. Để thực hiện điều này, làm theo các bước dưới đây:
+
+Di chuyển vào thư mục Backend của dự án.
+Thực hiện quyền thực thi cho script cài đặt.
+Chạy script để tự động cài đặt các phụ thuộc cần thiết.
+bash
+Sao chép
+Chỉnh sửa
+cd ByteForce-Hackathon2025/Backend  # Di chuyển vào thư mục Backend
+chmod +x setup.sh  # Cấp quyền thực thi cho file setup.sh
+./setup.sh  # Chạy script để cài đặt môi trường
+Cấu hình server
+Bạn có thể cấu hình các thuộc tính của server, chẳng hạn như Port, Mode hoặc LogFile, trong file cấu hình. Tệp cấu hình có thể được tìm thấy trong thư mục Backend/Server_Control/ServerConfig.conf. Mở file này để điều chỉnh theo nhu cầu của bạn.
+
+Chạy server
+Sau khi đã cài đặt và cấu hình xong, bạn có thể khởi động server bằng lệnh sau:
+
+bash
+Sao chép
+Chỉnh sửa
+cd ByteForce-Hackathon2025/Backend/Server_Control  # Di chuyển vào thư mục chứa script điều khiển server
+python3 UpdateServer.py  # Chạy script để khởi động server
+Kết quả khi chạy server: Khi bạn chạy script, sẽ có thông báo như sau:
+
+arduino
+Sao chép
+Chỉnh sửa
+Phucdeptrai@zTryhard:~/ByteForce-Hackathon2025/Backend/Server_Control$ python3 UpdateServer.py
+From https://github.com/caohoangphucs/ByteForce-Hackathon2025
+ * branch            main       -> FETCH_HEAD
+Already up to date.
+Server controller> 2025-03-11 23:25:24.002952
+
+Server controller> Server Initing...
+
+Killer> Killed Flask
+
+Server controller> Ngrok is running at: https://d0f1-171-235-176-232.ngrok-free.app Skipping....
+
+Flask> Flask is up!
+Giải thích:
+
+Ngrok sẽ tạo một đường link công cộng (ví dụ: https://d0f1-171-235-176-232.ngrok-free.app) để bạn có thể truy cập vào server đang chạy trên localhost.
+Flask là server web Python sẽ khởi động và bắt đầu lắng nghe các yêu cầu.
+Tắt server
+Khi bạn muốn tắt server, chỉ cần chạy lệnh:
+
+bash
+Sao chép
+Chỉnh sửa
+python3 UpdateServer.py shutdown  # Tắt server đang chạy
+Front-end JavaScript:
+Để gọi API từ phía frontend (JavaScript), bạn cần sử dụng các phương thức như fetch() hoặc axios để gửi yêu cầu HTTP đến server đang chạy.
+
+Ví dụ:
+
+javascript
+Sao chép
+Chỉnh sửa
+fetch('http://localhost:1111/api/endpoint', {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json'
+    }
+})
+.then(response => response.json())
+.then(data => console.log(data));
+Lưu ý:
+Sau khi khởi động lại server, bạn có thể truy cập vào URL công cộng của Cloudflare Tunnel:
+byteforce.caohoangphuc.id.vn. Cloudflare Tunnel sẽ tự động chuyển hướng đến địa chỉ http://localhost:1111 nơi Vite đang chạy. Điều này cho phép bạn truy cập ứng dụng web mà không cần mở cổng firewall hay thay đổi cấu hình mạng.
+
+Tóm tắt
+Với ByteForce-Hackathon2025, bạn có thể:
+
+Clone dự án từ GitHub.
+Cài đặt môi trường và các phụ thuộc cần thiết.
+Cấu hình server để hoạt động với các tham số như port, mode và log.
+Chạy server và sử dụng Cloudflare Tunnel để truy cập vào server từ xa.
+Quản lý server và thực hiện các thao tác như tắt server khi không cần thiết.
+Hy vọng với hướng dẫn chi tiết trên, bạn có thể dễ dàng triển khai và sử dụng dự án ByteForce-Hackathon2025.
+
+
+
+
+
+
+
+
+
+
+
+
