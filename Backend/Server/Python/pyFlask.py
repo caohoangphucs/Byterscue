@@ -60,7 +60,7 @@ def chatbot():
                     """
      
         # Gọi API để lấy câu trả lời
-        answer = geminiAPICall.generate_gemini_response(data + context + question)
+        answer = geminiAPICall.generate_gemini_response(question)
         
         # Trả về kết quả JSON đúng chuẩn UTF-8
         response = json.dumps({"Chat answer:":answer}, ensure_ascii = False)
