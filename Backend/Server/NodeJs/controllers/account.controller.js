@@ -13,7 +13,7 @@ exports.createAccount = async (req, res) => {
         await newAccount.save();
         
         // Gửi phản hồi thành công về frontend
-        res.status(201).json({ message: "Lưu thành công!", account: newAccount });
+        res.status(201).json({ ok: "true", account: newAccount });
     } catch (error) {
         // Xử lý lỗi nếu có
         res.status(500).json({ message: "Lỗi lưu dữ liệu!", error });

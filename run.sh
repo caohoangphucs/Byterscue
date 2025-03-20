@@ -31,6 +31,12 @@ elif [ "$1" = "shutdown" ]; then
     cd Backend/Server_Control/
     python3 UpdateServer.py shutdown
 
+elif [ "$1" = "restart" ]; then
+    echo ">Restarting server..."
+
+    sudo ./run.sh shutdown
+
+    sudo ./run.sh start
 else
-    echo "> Command not found! Usage: $0 start | shutdown"
+    echo "> Command not found! Usage: $0 start | shutdown | restart"
 fi
