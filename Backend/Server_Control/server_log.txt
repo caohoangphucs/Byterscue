@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 Server controller> 2025-03-20 13:06:53.684895
+=======
+Server controller> 2025-03-23 10:15:02.001812
+>>>>>>> 3f7a99c (project moi)
 Server controller> Server Initing...
 Killer> Killed Flask
 Flask> Flask is up, listening on port 4000
