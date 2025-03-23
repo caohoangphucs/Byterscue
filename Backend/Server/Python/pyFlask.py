@@ -3,9 +3,16 @@ from flask_cors import CORS
 import sys
 import os
 from Utils import *
-import geminiAPICall
+import random
 import json
-chatbot_data_path = "data/project_info.txt"
+from datetime import datetime, timedelta
+
+
+import api_controller
+import nodejs_comunicate_controll
+pre_request = {}
+pre_result = {}
+
 frontend_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../FrontEnd"))
 
 app = Flask(__name__, static_folder=None)
@@ -15,43 +22,30 @@ userPort = sys.argv[1] if len(sys.argv) > 1 else 5000
 
 @app.route("/")
 def index():
-    return jsonify({"message":"Chào con đĩ, tao là python"})
+    return jsonify({"message":"Hello world !"})
 @app.route('/log', methods=['GET'])
 def get_server_log():
     logPath = getConfigKey("logFile")
     result = ""
     with open(logPath, "r") as file:
         return file.read()
-@app.route('/getchatbotanswer', methods=['POST'])
-def chatbot():
-    try:
-        data = request.get_json()
-        if not data or 'message' not in data:
-            return jsonify({"Error": "Thiếu tham số 'message'"}), 400
-        
-        question = data['message']
-        data = "Đây là dữ liệu của dự án:"
-        with open(getcwd(0) + chatbot_data_path, "r", encoding="utf-8") as file:
-            lines = file.readlines()
-            for line in lines:
-                data += line.strip() + " "
-      
-        context = """Bạn là 1 chatbot agent, hãy trả lời thông tin mà bạn dbiết được, 
-                    tên của dự án là ByteForce UTE của hackathon, trả lời ngắn gọn, 
-                     chữ về chủ đề công nghệ, trả lời một cách dể hiểu, chỉ trả lời với những thông tin người dùng quan tâm.
-                    
-                    Sau đây là câu hỏi của user, trả lời bằng tiếng việt:
-                    
-                    """
-     
-        # Gọi API để lấy câu trả lời
-        answer = geminiAPICall.generate_gemini_response(data + context + question)
-        
-        # Trả về kết quả JSON đúng chuẩn UTF-8
-        response = json.dumps({"Chat answer:":answer}, ensure_ascii = False)
-        return response
-    except Exception as e:
-        return jsonify({"Error": str(e)}), 500
+@app.route("/get_status", methods = ["POST"]) 
+def get_priority_status():
+     global pre_request
+     pre_request = api_controller.get_priority_status(request)
+     return api_controller.get_priority_status(request)
+@app.route("/node_comunicate/get_form_info", methods = ["GET"])
+def send_form_info():
+    return nodejs_comunicate_controll.send_info(pre_request)
+
+@app.route("/node_comunicate/recieve_request", methods = ["POST"])
+def recieve_request():
+    global pre_result
+    pre_result = nodejs_comunicate_controll.recieve_request(request)
+    return jsonify({"status" : "POST OK"})
+@app.route("/get_result", methods = ["GET"])
+def send_result():
+    return json.dumps(pre_result, ensure_ascii = False)
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=userPort, debug=True)
     
