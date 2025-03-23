@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nhập thông tin</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        input, button {
+            margin: 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        #result, #fetchResult {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Nhập thông tin</h2>
+    <input type="text" id="message" placeholder="Nhập tin nhắn">
+    <input type="text" id="address" placeholder="Nhập địa chỉ">
+    <button onclick="processAndSave()">Gửi & Lưu</button>
+    <p id="result"></p>
+
+    <h2>Lấy tất cả dữ liệu</h2>
+    <button onclick="fetchAndSendAll()">Gửi tất cả dữ liệu</button>
+    <p id="fetchResult"></p>
+
+    <script>
+        // Hàm gửi dữ liệu nhập vào
+        async function processAndSave() {
+            document.getElementById("result").innerText = "Đang xử lý...";
+
+            const message = document.getElementById("message").value;
+            const address = document.getElementById("address").value;
+
+            if (!message || !address) {
+                document.getElementById("result").innerText = "Vui lòng nhập đầy đủ thông tin!";
+                return;
+            }
+
+            const dataToSend = { message, address };
+
+            try {
+                // 1️⃣ Gửi dữ liệu đến backend khác để xử lý
+                const externalResponse = await fetch("http://byteforce.caohoangphuc.id.vn/python/get_status", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(dataToSend)
+                });
+
+                if (!externalResponse.ok) throw new Error("Lỗi từ backend khác");
+
+                const processedData = await externalResponse.json();
+
+                // 2️⃣ Sau khi xử lý xong, gửi kết quả đến backend của bạn để lưu
+                const saveResponse = await fetch("http://localhost:5000/api/locations", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(processedData)
+                });
+
+                if (!saveResponse.ok) throw new Error("Lỗi khi lưu vào backend của bạn");
+
+                document.getElementById("result").innerText = "Dữ liệu đã xử lý & lưu thành công!";
+            } catch (error) {
+                document.getElementById("result").innerText = "Lỗi: " + error.message;
+            }
+        }
+
+        // Hàm lấy toàn bộ dữ liệu và gửi sang backend khác
+        async function fetchAndSendAll() {
+            document.getElementById("fetchResult").innerText = "Đang lấy dữ liệu...";
+
+            try {
+                // 1️⃣ Lấy toàn bộ dữ liệu từ backend của bạn
+                const response = await fetch("http://localhost:5000/api/locations");
+                if (!response.ok) throw new Error("Lỗi khi lấy dữ liệu từ backend");
+
+                const data = await response.json();
+
+                // 2️⃣ Gửi dữ liệu này đến backend khác
+                const sendResponse = await fetch("http://byteforce.caohoangphuc.id.vn/python/node_comunicate/recieve_request", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ locations: data })
+                });
+
+                if (!sendResponse.ok) throw new Error("Lỗi khi gửi dữ liệu đến backend khác");
+
+                document.getElementById("fetchResult").innerText = "Dữ liệu đã gửi thành công!";
+            } catch (error) {
+                document.getElementById("fetchResult").innerText = "Lỗi: " + error.message;
+            }
+        }
+    </script>
+
+</body>
+</html>
