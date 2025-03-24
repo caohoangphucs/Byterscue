@@ -11,4 +11,7 @@ import json
 def send_info(data):
     return data
 def recieve_request(request):
-    return request.get_json()
+    temp = {
+        "locations" : [request.get_json()]
+    }
+    return temp

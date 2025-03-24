@@ -5,9 +5,16 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
+  
   server: {
-    host: "::",
-    port: 8080,
+    hmr: {
+      host: 'your-tunneled-url.com', // Thay bằng URL tunnel của bạn
+      protocol: 'wss', // Đảm bảo dùng WebSocket Secure
+    },
+    host: '0.0.0.0',  
+    allowedHosts: [
+      'byteforce.caohoangphuc.id.vn', 
+    ],
   },
   plugins: [
     react(),

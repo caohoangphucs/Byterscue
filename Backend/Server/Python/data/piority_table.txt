@@ -1,0 +1,84 @@
+Mức độ nguy hiểm (0-1)
+
+0.0: Không có nguy cơ đáng kể, tình huống ổn định.
+
+0.2: Nguy cơ nhẹ (ví dụ: một số vết thương nhẹ, không đe dọa đến tính mạng).
+
+0.4: Nguy cơ trung bình (ví dụ: bị thương nhẹ đến vừa phải, có thể cứu chữa tại hiện trường).
+
+0.6: Nguy cơ cao (ví dụ: có người bị thương nặng, có khả năng tử vong nếu không được cứu trợ).
+
+0.8: Nguy cơ rất cao (ví dụ: thảm họa thiên nhiên, số lượng người bị thương nặng hoặc nguy hiểm đến tính mạng).
+
+1.0: Nguy cơ cực kỳ cao (ví dụ: sóng thần, động đất, hỏa hoạn lớn, số lượng lớn người gặp nạn với nguy cơ tử vong cao nếu không có cứu trợ ngay lập tức).
+
+Số lượng người bị ảnh hưởng (0-1)
+
+0.0: Không có người bị ảnh hưởng.
+
+0.2: Ít người bị ảnh hưởng (ví dụ: dưới 10 người).
+
+0.4: Số lượng người bị ảnh hưởng trung bình (từ 10 đến 50 người).
+
+0.6: Số lượng người bị ảnh hưởng nhiều (từ 50 đến 200 người).
+
+0.8: Rất nhiều người bị ảnh hưởng (từ 200 đến 500 người).
+
+1.0: Số lượng người bị ảnh hưởng lớn (trên 500 người, hoặc hàng ngàn người).
+
+Tình trạng cơ sở hạ tầng (0-1)
+
+0.0: Cơ sở hạ tầng không bị ảnh hưởng (đường giao thông, điện, nước vẫn hoạt động bình thường).
+
+0.2: Cơ sở hạ tầng bị ảnh hưởng nhẹ (một vài tuyến đường bị tắc nghẽn, điện, nước có thể gián đoạn trong một thời gian ngắn).
+
+0.4: Cơ sở hạ tầng bị ảnh hưởng trung bình (một số khu vực bị mất điện hoặc đường giao thông bị tắc nghẽn nghiêm trọng, không thể di chuyển nhanh chóng).
+
+0.6: Cơ sở hạ tầng bị ảnh hưởng lớn (hệ thống điện, nước bị gián đoạn hoặc giao thông bị tê liệt ở khu vực rộng lớn, khó di chuyển cứu trợ).
+
+0.8: Cơ sở hạ tầng gần như bị phá hủy hoàn toàn (giao thông tê liệt, thiếu thốn cơ sở vật chất thiết yếu).
+
+1.0: Cơ sở hạ tầng hoàn toàn bị phá hủy hoặc không thể tiếp cận (không có đường xá, điện, nước hoặc mọi cơ sở y tế và cứu hộ bị phá hủy).
+
+Khả năng tiếp cận (0-1)
+
+0.0: Khu vực dễ dàng tiếp cận (giao thông thuận tiện, không có chướng ngại vật).
+
+0.2: Khu vực có một chút khó khăn trong việc tiếp cận (ví dụ: một số đoạn đường hư hỏng nhẹ, nhưng có thể tiếp cận bằng phương tiện thông thường).
+
+0.4: Khu vực khá khó khăn để tiếp cận (cần phương tiện chuyên dụng, có nhiều đoạn đường hư hỏng).
+
+0.6: Khu vực khó tiếp cận (giao thông bị gián đoạn nghiêm trọng, cần sử dụng phương tiện đặc biệt hoặc cần nhiều thời gian để tiếp cận).
+
+0.8: Khu vực cực kỳ khó tiếp cận (giao thông gần như không thể, cần nhiều nguồn lực và thời gian lớn để vào khu vực này).
+
+1.0: Khu vực hoàn toàn bị cô lập (không thể tiếp cận do thiên tai, giao thông tê liệt hoàn toàn).
+
+Khả năng đáp ứng của các tổ chức cứu trợ khác (0-1)
+
+0.0: Nhiều tổ chức cứu trợ có mặt và sẵn sàng hành động ngay lập tức.
+
+0.2: Một vài tổ chức cứu trợ có sẵn nhưng có thể mất thời gian để triển khai.
+
+0.4: Các tổ chức cứu trợ ít, nhưng vẫn cần chuẩn bị thêm hoặc phối hợp với các cơ quan khác.
+
+0.6: Rất ít tổ chức cứu trợ có mặt và cần thời gian để di chuyển đến khu vực hoặc không đủ năng lực.
+
+0.8: Không có tổ chức cứu trợ nào trong khu vực hoặc rất ít tổ chức với nguồn lực hạn chế.
+
+1.0: Không có tổ chức cứu trợ nào hoặc không thể huy động được cứu trợ.
+
+Công thức tính toán tổng thể:
+Sau khi đánh giá từng yếu tố, bạn có thể tính điểm tổng thể theo công thức như sau:
+
+Điểm ưu tiên = (1/5) × (Điểm Mức độ nguy hiểm + Điểm Số lượng người + Điểm Tình trạng cơ sở hạ tầng + Điểm Khả năng tiếp cận + Điểm Khả năng đáp ứng)
+
+Điểm này sẽ dao động từ 0 (không ưu tiên) đến 1 (ưu tiên cực kỳ cao), và có thể sử dụng điểm này để quyết định mức độ cứu trợ cần thiết và thứ tự ưu tiên.
+
+Ví dụ:
+
+Nếu mức độ nguy hiểm là 0.8, số lượng người bị ảnh hưởng là 0.6, tình trạng cơ sở hạ tầng là 0.7, khả năng tiếp cận là 0.5, và khả năng đáp ứng của các tổ chức cứu trợ là 0.4, thì:
+
+Điểm ưu tiên = (1/5) × (0.8 + 0.6 + 0.7 + 0.5 + 0.4) = (1/5) × 3.0 = 0.6
+
+Điểm 0.6 cho thấy mức độ ưu tiên cứu trợ là khá cao, nhưng không phải là cấp bách nhất.

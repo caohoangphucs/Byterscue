@@ -6,7 +6,7 @@ from Utils import *
 import random
 import json
 from datetime import datetime, timedelta
-
+import requests
 
 import api_controller
 import nodejs_comunicate_controll
@@ -33,7 +33,9 @@ def get_server_log():
 def get_priority_status():
      global pre_request
      pre_request = api_controller.get_priority_status(request)
-     return api_controller.get_priority_status(request)
+     res = api_controller.get_priority_status(request)
+     requests.post("http://localhost:5000/api/locations", res)
+     return res
 @app.route("/node_comunicate/get_form_info", methods = ["GET"])
 def send_form_info():
     return nodejs_comunicate_controll.send_info(pre_request)
@@ -45,7 +47,11 @@ def recieve_request():
     return jsonify({"status" : "POST OK"})
 @app.route("/get_result", methods = ["GET"])
 def send_result():
-    return json.dumps(pre_result, ensure_ascii = False)
+    result = requests.get("http://localhost:5000/api/locations").json()
+    final_res = {
+        "locations" : result
+    }
+    return json.dumps(final_res, ensure_ascii = False)
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=userPort, debug=True)
     
