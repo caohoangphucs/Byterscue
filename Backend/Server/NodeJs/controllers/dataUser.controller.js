@@ -77,7 +77,7 @@ exports.getAllLocations = async (req, res) => {
         );
 
         // Trả về danh sách dữ liệu
-        res.status(200).json( locations );
+        res.status(200).json( {locations: locations });
     } catch (error) {
         res.status(500).json({ message: "Lỗi khi lấy dữ liệu!", error: error.message });
     }

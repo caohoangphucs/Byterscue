@@ -10,6 +10,10 @@ import requests
 
 import api_controller
 import nodejs_comunicate_controll
+import api_call.geminiAPICall as gemini
+import mongoControl
+from bson.json_util import dumps, loads
+from bson import json_util, ObjectId
 pre_request = {}
 pre_result = {}
 
@@ -19,7 +23,18 @@ app = Flask(__name__, static_folder=None)
 
 CORS(app)
 userPort = sys.argv[1] if len(sys.argv) > 1 else 5000
-
+database = mongoControl.MongoDBHandler("hackathon2025", "people")
+finished_database = mongoControl.MongoDBHandler("hackathon2025", "finished")
+def convert_mongo_types(obj):
+    """Chuyển ObjectId & datetime thành string để JSON serializable"""
+    if isinstance(obj, ObjectId):
+        return str(obj)
+    if isinstance(obj, datetime):
+        return obj.isoformat()  # Chuyển datetime sang chuỗi
+    raise TypeError(f"Type {type(obj)} not serializable")
+def form_data(data):
+    return json.dumps(data,default=convert_mongo_types, ensure_ascii=False, indent=4)
+ 
 @app.route("/")
 def index():
     return jsonify({"message":"Hello world !"})
@@ -29,29 +44,32 @@ def get_server_log():
     result = ""
     with open(logPath, "r") as file:
         return file.read()
-@app.route("/get_status", methods = ["POST"]) 
-def get_priority_status():
-     global pre_request
-     pre_request = api_controller.get_priority_status(request)
-     res = api_controller.get_priority_status(request)
-     requests.post("http://localhost:5000/api/locations", res)
-     return res
-@app.route("/node_comunicate/get_form_info", methods = ["GET"])
-def send_form_info():
-    return nodejs_comunicate_controll.send_info(pre_request)
 
-@app.route("/node_comunicate/recieve_request", methods = ["POST"])
-def recieve_request():
-    global pre_result
-    pre_result = nodejs_comunicate_controll.recieve_request(request)
-    return jsonify({"status" : "POST OK"})
-@app.route("/get_result", methods = ["GET"])
-def send_result():
-    result = requests.get("http://localhost:5000/api/locations").json()
-    final_res = {
-        "locations" : result
-    }
-    return json.dumps(final_res, ensure_ascii = False)
+@app.route('/api/get_gemini_rsp', methods=['POST'])
+def get_gemini_rsp():
+    message = request.get_json().get("message")
+    context = """Chào bạn, bạn là người hỗ trợ tư vấn cho nhân viên cứu hộ"""
+    return json.dumps(gemini.generate_gemini_response(context+message), ensure_ascii=False)
+
+
+@app.route("/api/change_request_status", methods=['POST'])
+def change_request_status():
+    request_id = request.get_json().get("id")
+    status = request.get_json().get("status")
+    database.modify_request_attr(request_id, "status",status)
+    return jsonify({"Responce":"Done bro!"})
+
+@app.route("/api/get_request_status", methods = ['POST'])
+def get_request_status():
+    request_id = request.get_json().get("id")
+    if (request_id == None):
+        return jsonify({"Responce":"Missing request id"})
+    user_request = database.find_request(request_id)
+    print(user_request)
+    return user_request.get("status")
+@app.route("/api/get_all_finished_request", methods=["GET"])
+def get_all():
+    return form_data(finished_database.get_all_request())
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=userPort, debug=True)
     

@@ -1,27 +1,31 @@
- server 
-   {     
-    listen 80;
-    server_name byteforce.caohoangphuc.id.vn;  # Thay bằng domain của bạn, hoặc để trống nếu dùng IP
+# Phần HTTP (cho web server, API...)
+http {
+    server {
+        listen 80;
+        server_name byteforce.caohoangphuc.id.vn;
 
-    location / {
-        proxy_pass http://localhost:1111;  # Chuyển traffic đến cổng Vite đang chạy
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-    location /python/ {
-        proxy_pass http://localhost:4000/;  # Chuyển tiếp đến cổng 4000
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-    location /nodejs/ {
-        proxy_pass http://localhost:5000/;  # Chuyển tiếp đến cổng 4000
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
+        location / {
+            proxy_pass http://localhost:1111;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+
+        location /python/ {
+            proxy_pass http://localhost:4000/;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+
+        location /nodejs/ {
+            proxy_pass http://localhost:5000/;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
     }
 }

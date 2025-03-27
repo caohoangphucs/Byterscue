@@ -1,14 +1,47 @@
 from pymongo import MongoClient
 
-# Kết nối MongoDB
-client = MongoClient("mongodb://localhost:27017/")
+class MongoDBHandler:
+    def __init__(self, db_name, collection_name, uri="mongodb://hackathon:byteforce@ec2-52-74-123-110.ap-southeast-1.compute.amazonaws.com/admin"):
+        self.client = MongoClient(uri)
+        self.db = self.client[db_name]
+        self.collection = self.db[collection_name]
+    def is_exist(self, id)->bool:
+        if (self.collection.find_one({"id":id})==None): return False
+        return True
+    def is_request_have_id(self, request)->bool:
+        if (request.get("id")==None): return False
+        return True
+    def get_all_request(self) -> list:
+       return list(self.collection.find())
 
-# Chọn database
-db = client["hackathon2025"]
+    def find_request(self, id:str)->dict:
+        if (id==None): return "ID not valid"
+        if (not self.is_exist(id)): return "ID not found"
+        return self.collection.find_one({"id":id})
+    def clear_collection(self):
+        self.collection.delete_many({})
+    def modify_request_attr(self, doc_id, attr, new_value)->str:
+        if (doc_id==None): return "Id is required"
+        self.collection.update_one({"id": doc_id}, {"$set": {attr: new_value}})
 
-# Chọn collection (bảng)
-collection = db["accounts"]
+    def add_requests(self, request_list):
+        if isinstance(request_list, list):
+            self.collection.insert_many(request_list)
+        else:
+            raise ValueError("Dữ liệu đầu vào phải là một danh sách các dictionary")
 
-print("All users:")
-for account in collection.find():
-    print(account.get("loginName"))
+    def add_one_request(self, request: dict) -> bool:
+        
+        try:
+            self.collection.insert_one(request)
+        except Exception as e:
+            print("Error when adding request:")
+            print("More detail:", str(e))
+
+    def delete(self, doc_id):
+        self.collection.delete_one({"id": doc_id})
+
+    def show(self):
+        for request in self.get_all_request():
+            print(request)
+

@@ -1,0 +1,46 @@
+[
+  {
+    "id": "405",
+    "name": "Nguyen Van A",
+    "phone": "0987654321",
+    "location": [150, 200],
+    "status": "Pending",
+    "priority": "high",
+    "image": null,
+    "message": "Cần giúp đỡ ngay lập tức!",
+    "address": "Hà Nội"
+  },
+  {
+    "id": "406",
+    "name": "Tran Thi B",
+    "phone": "0912345678",
+    "location": [300, 400],
+    "status": "Accepted",
+    "priority": "medium",
+    "image": null,
+    "message": "Có vấn đề cần hỗ trợ, vui lòng liên hệ.",
+    "address": "Đà Nẵng"
+  },
+  {
+    "id": "407",
+    "name": "Le Van C",
+    "phone": "0321654987",
+    "location": [500, 600],
+    "status": "Rejected",
+    "priority": "low",
+    "image": null,
+    "message": "Không cần hỗ trợ nữa, cảm ơn!",
+    "address": "Cần Thơ"
+  },
+  {
+    "id": "408",
+    "name": "Pham Thi D",
+    "phone": "0765432109",
+    "location": [50, 80],
+    "status": "Pending",
+    "priority": "high",
+    "image": null,
+    "message": "Tôi bị lạc, cần sự giúp đỡ.",
+    "address": "Huế"
+  }
+]
