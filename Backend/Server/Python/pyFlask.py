@@ -57,6 +57,10 @@ def change_request_status():
     request_id = request.get_json().get("id")
     status = request.get_json().get("status")
     database.modify_request_attr(request_id, "status",status)
+    if (status=="Finished"):
+        cur_request = database.find_request(request_id)
+        finished_database.add_one_request(cur_request)
+        database.remove_request(request_id)
     return jsonify({"Responce":"Done bro!"})
 
 @app.route("/api/get_request_status", methods = ['POST'])
@@ -70,6 +74,7 @@ def get_request_status():
 @app.route("/api/get_all_finished_request", methods=["GET"])
 def get_all():
     return form_data(finished_database.get_all_request())
+
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=userPort, debug=True)
     

@@ -23,7 +23,8 @@ class MongoDBHandler:
     def modify_request_attr(self, doc_id, attr, new_value)->str:
         if (doc_id==None): return "Id is required"
         self.collection.update_one({"id": doc_id}, {"$set": {attr: new_value}})
-
+    def remove_request(self, id)->bool:
+        self.collection.delete_one({"id", id})
     def add_requests(self, request_list):
         if isinstance(request_list, list):
             self.collection.insert_many(request_list)
