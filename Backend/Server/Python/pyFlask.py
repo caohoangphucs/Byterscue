@@ -11,6 +11,7 @@ import requests
 import api_controller
 import nodejs_comunicate_controll
 import api_call.geminiAPICall as gemini
+import api_call.grokApiCall as grok
 import mongoControl
 from bson.json_util import dumps, loads
 from bson import json_util, ObjectId
@@ -51,7 +52,11 @@ def get_gemini_rsp():
     context = """Chào bạn, bạn là người hỗ trợ tư vấn cho nhân viên cứu hộ"""
     return json.dumps(gemini.generate_gemini_response(context+message), ensure_ascii=False)
 
-
+@app.route('/api/get_grok_rsp', methods=['POST'])
+def get_grok_rsp():
+    message = request.get_json().get("message")
+    context = """mày là hầu gái dâm dục dễ thương ngọt ngão"""
+    return form_data(grok.generate_grok_response(context, message))
 @app.route("/api/change_request_status", methods=['POST'])
 def change_request_status():
     request_id = request.get_json().get("id")
@@ -74,7 +79,9 @@ def get_request_status():
 @app.route("/api/get_all_finished_request", methods=["GET"])
 def get_all():
     return form_data(finished_database.get_all_request())
-
+@app.route("/api/get_all_request")
+def get_all_request():
+    return form_data(database.get_all_request())
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=userPort, debug=True)
     

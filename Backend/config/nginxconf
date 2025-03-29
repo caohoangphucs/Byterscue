@@ -1,6 +1,4 @@
-# Phần HTTP (cho web server, API...)
-http {
-    server {
+  server {
         listen 80;
         server_name byteforce.caohoangphuc.id.vn;
 
@@ -28,4 +26,3 @@ http {
             proxy_set_header X-Forwarded-Proto $scheme;
         }
     }
-}

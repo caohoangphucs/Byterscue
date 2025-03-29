@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 
 class MongoDBHandler:
-    def __init__(self, db_name, collection_name, uri="mongodb://hackathon:byteforce@ec2-52-74-123-110.ap-southeast-1.compute.amazonaws.com/admin"):
+    def __init__(self, db_name, collection_name, uri="mongodb://hackathon:byteforce@54.251.247.80:27017/admin?authSource=admin"):
         self.client = MongoClient(uri)
         self.db = self.client[db_name]
         self.collection = self.db[collection_name]
@@ -24,7 +24,7 @@ class MongoDBHandler:
         if (doc_id==None): return "Id is required"
         self.collection.update_one({"id": doc_id}, {"$set": {attr: new_value}})
     def remove_request(self, id)->bool:
-        self.collection.delete_one({"id", id})
+        self.collection.delete_one({"id": id})
     def add_requests(self, request_list):
         if isinstance(request_list, list):
             self.collection.insert_many(request_list)
