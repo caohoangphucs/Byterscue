@@ -12,6 +12,7 @@ pip install flask_cors --break-system-packages -q
 pip install pathlib --break-system-packages -q
 pip install google-generativeai -break-system-packages -q
 pip install pymongo -break-system-packages -q
+pip install openai --break-system-packages
 pip installl pymongo -y
 cd Server/NodeJs
 npm install --yes
