@@ -9,9 +9,8 @@ from datetime import datetime, timedelta
 import requests
 
 import api_controller
-import nodejs_comunicate_controll
 import api_call.geminiAPICall as gemini
-import api_call.grokApiCall as grok
+#import api_call.grokApiCall as grok
 import mongoControl
 from bson.json_util import dumps, loads
 from bson import json_util, ObjectId
