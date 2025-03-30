@@ -18,8 +18,8 @@ if [ "$1" = "start" ]; then
     python3 UpdateServer.py
 
 elif [ "$1" = "shutdown" ]; then
-    echo "> Shutting down MongoDB..."
-    sudo systemctl stop mongod  # Dùng 'stop' thay vì 'pkill'
+    #echo "> Shutting down MongoDB..."
+    #sudo systemctl stop mongod  # Dùng 'stop' thay vì 'pkill'
 
     echo "> Shutting down Cloudflare Tunnel..."
     sudo systemctl stop cloudflared
