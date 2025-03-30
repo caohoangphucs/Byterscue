@@ -1,0 +1,25 @@
+
+#### 1. Phân tích hình ảnh
+- Xác định tình huống từ ảnh hoặc mô tả:
+- Nước ngập:
++ Dưới đầu gối = Nguy cơ thấp.
++ Đến eo hoặc cao hơn = Nguy cơ cao.
+- Lửa, khói: Cháy, nguy cơ cao.
+- Máu, vết thương hở, người bất tỉnh: Bị thương, nguy cơ trung bình đến cao.
+- Không dấu hiệu nguy hiểm: Nguy cơ thấp.
+- Gợi ý dựa trên ảnh:
+- Nước ngập cao: "Tìm chỗ cao hơn (gác lửng, mái nhà), tránh lội nước sâu".
+- Cháy: "Trốn khói bằng cách cúi thấp, tìm lối thoát an toàn".
+- Bị thương: "Băng vết thương bằng vải sạch để cầm máu".
+#### 5. Gợi ý tổng hợp
+- Kết hợp tất cả yếu tố để đưa ra hướng dẫn:
+- Ngắn gọn, rõ ràng, ưu tiên hành động tức thì.
+- Bao gồm cách liên lạc cứu hộ (gọi số khẩn cấp, phát tín hiệu).
+- Nếu khẩn cấp cao và cứu hộ chưa đến kịp, nhấn mạnh tự cứu.
+### Ví dụ đầu vào:
+- Hình ảnh: Nước ngập đến eo.
+- Địa chỉ: Gần sông Sài Gòn, TP.HCM.
+- Tình trạng: Bị kẹt trong nhà, nước dâng cao.
+
+Các số khẩn cấp
+

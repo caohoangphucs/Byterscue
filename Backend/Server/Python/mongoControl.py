@@ -15,8 +15,8 @@ class MongoDBHandler:
        return list(self.collection.find())
 
     def find_request(self, id:str)->dict:
-        if (id==None): return "ID not valid"
-        if (not self.is_exist(id)): return "ID not found"
+        if (id==None): return None
+        if (not self.is_exist(id)): return None
         return self.collection.find_one({"id":id})
     def clear_collection(self):
         self.collection.delete_many({})
@@ -30,7 +30,11 @@ class MongoDBHandler:
             self.collection.insert_many(request_list)
         else:
             raise ValueError("Dữ liệu đầu vào phải là một danh sách các dictionary")
-
+    def add_atr(self, id, atrb, value):
+        self.collection.update_one(
+            {"id":id},
+            {"$set" : {atrb: value}}
+        )
     def add_one_request(self, request: dict) -> bool:
         
         try:
