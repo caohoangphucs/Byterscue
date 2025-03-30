@@ -6,7 +6,10 @@ def remove_special_chars(text):
 import os
 import sys
 import datetime
-
+import requests
+from PIL import Image
+from io import BytesIO
+data_path = "data/image/"
 def Log(message):
     os.system("echo "+message)
 
@@ -74,4 +77,12 @@ def readLog(filePath):
         lines = file.readlines()
         for line in lines:
             print(line)
-print(getConfigKey("logFile"))
+def fetch_image(url):
+    response = requests.get(url)
+    if response.status_code == 200:
+        img = Image.open(BytesIO(response.content))
+        img.show()  
+    else:
+        print("Không thể tải ảnh từ URL.")    
+def get_user_image(user_id):
+    return Image.open(getcwd()+data_path+user_id+".jpg")

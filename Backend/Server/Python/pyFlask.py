@@ -8,11 +8,12 @@ import json
 from datetime import datetime, timedelta
 import requests
 
-import api_controller
+import sitedef
 import api_call.geminiAPICall as gemini
 #import api_call.grokApiCall as grok
 import mongoControl
 from bson.json_util import dumps, loads
+from PIL import Image
 from bson import json_util, ObjectId
 pre_request = {}
 pre_result = {}
@@ -25,6 +26,7 @@ CORS(app)
 userPort = sys.argv[1] if len(sys.argv) > 1 else 5000
 database = mongoControl.MongoDBHandler("hackathon2025", "people")
 finished_database = mongoControl.MongoDBHandler("hackathon2025", "finished")
+rescuer = mongoControl.MongoDBHandler("hackathon2025", "rescuer")
 def convert_mongo_types(obj):
     """Chuyển ObjectId & datetime thành string để JSON serializable"""
     if isinstance(obj, ObjectId):
@@ -44,13 +46,57 @@ def get_server_log():
     result = ""
     with open(logPath, "r") as file:
         return file.read()
-
+@app.route('/api/get_recomment_action_client', methods=['POST'])
+def get_recomment_aciton():
+    try:
+        request_id = request.get_json().get("id")
+        print(request_id)
+        detail = database.find_request(request_id).get("details")
+        return sitedef.get_recomment_aciton(detail)
+    except Exception as e:
+        return "Request đã được xử lý hoặc không tồn tại" 
+@app.route("/api/get_recomment_action_rescuer", methods=['POST'])
+def get_recomment_aciton_rescuer():
+    try:
+        request_id = request.get_json().get("id")
+        print(request_id)
+        detail = database.find_request(request_id).get("details")
+        return sitedef.get_recomment_aciton_rescuer(detail)
+    except Exception as e:
+        return "Request đã được xử lý hoặc không tồn tại" 
 @app.route('/api/get_gemini_rsp', methods=['POST'])
 def get_gemini_rsp():
-    message = request.get_json().get("message")
-    context = """Chào bạn, bạn là người hỗ trợ tư vấn cho nhân viên cứu hộ"""
-    return json.dumps(gemini.generate_gemini_response(context+message), ensure_ascii=False)
-
+    message = request.form.get("message")
+    try:
+        image = request.files["image"]
+        request_image = Image.open(image)
+    except:
+        request_image = ""
+    context = """Chào bạn, bạn là người hỗ trợ tư vấn cho nhân viên cứu hộ, nếu có hình ảnh thì dựa vào hình ảnh để trả lời người dùng
+                nếu cần search thêm thông tin về địa điểm đó thì dựa vào thông tin search và cả hình ảnh nữa, hãy trả lời ngắn gọn và đúng trọng tâm, như mô tả
+                các đặc trưng của hình ảnh, """
+    return json.dumps(gemini.generate_gemini_response(context+message, request_image), ensure_ascii=False)
+@app.route('/api/save_image', methods=['POST'])
+def save_image():
+    try:
+        request_id = request.form.get("id")
+        image = Image.open(request.files['image'])
+        save_path = getcwd()+"data/image/"+f"{request_id}.jpg"
+        print(save_path)
+        image.save(save_path)
+        database.add_atr(request_id, "details", sitedef.get_request_detail(request_id))
+        return "ok gud job, i saved your image"
+    except Exception as e:
+        return "Fucking error bro: "+str(e)
+@app.route('/api/get_3d_image_url', methods=['POST'])
+def get_3d_image_url():
+    try:
+        request_id = request.get_json().get("id")
+        coor = database.find_request(request_id).get("location")
+        print(coor)
+        return sitedef.get_street_view_url(coor)
+    except Exception as e:
+        return "not fucking work bro:" + str(e)
 @app.route('/api/get_grok_rsp', methods=['POST'])
 def get_grok_rsp():
     message = request.get_json().get("message")
@@ -73,7 +119,9 @@ def get_request_status():
     if (request_id == None):
         return jsonify({"Responce":"Missing request id"})
     user_request = database.find_request(request_id)
-    print(user_request)
+    if user_request==None:
+        user_request = finished_database.find_request(request_id)
+    if (user_request==None): return "Đéo thấy id nào như này cả thằng súc vật"
     return user_request.get("status")
 @app.route("/api/get_all_finished_request", methods=["GET"])
 def get_all():
