@@ -8,7 +8,8 @@ import sys
 import datetime
 import requests
 from PIL import Image
-from io import BytesIO
+import io
+import base64
 data_path = "data/image/"
 def Log(message):
     os.system("echo "+message)
@@ -84,5 +85,15 @@ def fetch_image(url):
         img.show()  
     else:
         print("Không thể tải ảnh từ URL.")    
-def get_user_image(user_id):
-    return Image.open(getcwd()+data_path+user_id+".jpg")
+def image_to_base64(image_path):
+    with open(image_path, "rb") as image_file:
+        base64_string = base64.b64encode(image_file.read()).decode('utf-8')
+    return base64_string
+def PILtoBase64(PIL_image):
+    buffer = io.BytesIO()
+    PIL_image.save(buffer, format="JPEG")
+    buffer.seek(0)
+    img_base64 = base64.b64encode(buffer.read()).decode("utf-8")
+    return img_base64
+def BinToBase64(BIN_image):
+    return base64.b64encode(BIN_image).decode("utf-8")

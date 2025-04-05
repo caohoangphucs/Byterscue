@@ -10,11 +10,12 @@ import requests
 
 import sitedef
 import api_call.geminiAPICall as gemini
-#import api_call.grokApiCall as grok
+import api_call.grokApiCall as grok
 import mongoControl
 from bson.json_util import dumps, loads
 from PIL import Image
 from bson import json_util, ObjectId
+import base64
 pre_request = {}
 pre_result = {}
 
@@ -80,28 +81,61 @@ def get_gemini_rsp():
 def save_image():
     try:
         request_id = request.form.get("id")
-        image = Image.open(request.files['image'])
+        image = request.files['image']
         save_path = getcwd()+"data/image/"+f"{request_id}.jpg"
         print(save_path)
         image.save(save_path)
-        database.add_atr(request_id, "details", sitedef.get_request_detail(request_id))
+        database.add_atr(request_id, "details", sitedef.describe_image(image.open()))
         return "ok gud job, i saved your image"
     except Exception as e:
         return "Fucking error bro: "+str(e)
-@app.route('/api/get_3d_image_url', methods=['POST'])
-def get_3d_image_url():
+@app.route('/api/get_streetview_script', methods=['GET'])
+def get_script():
+    request_id = request.args.get("id")
+    request_coor = database.find_request(request_id).get("location")
+    return sitedef.get_streetview_script(request_coor)
+@app.route('/api/get_grok_rsp_rescuer', methods=['POST'])
+def client_chat():
+    request_id = request.get_json().get("id")
+    question = request.get_json().get("message")
+    client_request = database.find_request(request_id)
     try:
-        request_id = request.get_json().get("id")
-        coor = database.find_request(request_id).get("location")
-        print(coor)
-        return sitedef.get_street_view_url(coor)
-    except Exception as e:
-        return "not fucking work bro:" + str(e)
+        save_path = getcwd()+"data/image/"+f"{request_id}.jpg"
+        base64_image = image_to_base64(save_path)
+    except:
+        base64_image=""
+    
+    context = f"""Bạn là người hỗ trợ tư vấn cho người giải cứu nạn nhân gặp nạn, đây là thông tin cầu cứu của người dùng:
+                    thông tin cầu cứu {client_request}, sài hình ảnh nữa,trả lời người người giải cứu, tự nhiên, ngắn gọn, 1 đoạn
+                    """
+    return grok.generate_grok_response(context, question, base64_image)
+
 @app.route('/api/get_grok_rsp', methods=['POST'])
 def get_grok_rsp():
-    message = request.get_json().get("message")
-    context = """mày là hầu gái dâm dục dễ thương ngọt ngão"""
-    return form_data(grok.generate_grok_response(context, message))
+    base64_image=""
+    try:
+        message = request.form.get("message")
+        image = request.files["image"]
+        base64_image = BinToBase64(image.read())
+    except Exception as e:
+        print("Suck me dick with error :" + str(e))    
+    context = """Mày là trợ lý của dự án Byteforce rescure, hãy trả lời người dùng láo nhất có thể, chửi chết con mẹ nó luôn,
+                Hãy tập trung vào yếu tố giải pháp, câu trả lời cụ thể và xúc tích"""
+    return form_data(grok.generate_grok_response(context, message, base64_image))
+@app.route('/api/describe_image', methods=['POST'])
+def describe_image():
+    base64_image=""
+    
+    try:
+        message = request.form.get("message")
+        image = request.files["image"]
+        base64_image = BinToBase64(image.read())
+    except Exception as e:
+        print("Suck me dick with error :" + str(e))    
+    if not message: message = "describe for me"
+    context = """hãy dựa vào hình ảnh, tìm các yếu tố có thể gây ảnh hưởng tới sự an toàn, không giải thích dài dòng, hãy chú trọng những thông tin quan trọng, trả lời tầm 50 chữ
+                 Tiếp theo, tìm các đặc điểm nhận dạng đặc trưng của nơi trong ảnh, cái gì đặc trung và dễ thấy nhất càng tốt, không dài dòng    """
+    return form_data(grok.generate_grok_response(context, message, base64_image))
 @app.route("/api/change_request_status", methods=['POST'])
 def change_request_status():
     request_id = request.get_json().get("id")
@@ -112,7 +146,11 @@ def change_request_status():
         finished_database.add_one_request(cur_request)
         database.remove_request(request_id)
     return jsonify({"Responce":"Done bro!"})
-
+@app.route('/api/get_embed_map', methods=['GET'])
+def get_embed_map():
+    request_id = request.args.get("id")
+    request_coor = database.find_request(request_id).get("location")
+    return sitedef.get_embed_map_url(request_coor)
 @app.route("/api/get_request_status", methods = ['POST'])
 def get_request_status():
     request_id = request.get_json().get("id")
