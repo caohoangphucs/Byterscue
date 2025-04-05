@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Google Street View</title>
+  <style>
+    #qr-top-left {
+        position: fixed;
+        top: 30px;
+        left: 20px;
+        width: 80px;
+        height: 80px;
+        z-index: 9999;
+    }
+    #street-view {
+      width: 100%;
+      height: 700px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
+      position: relative;
+      background-color: #e0e0e0;
+      overflow: hidden;
+    }
+    #street-view iframe {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      width: 300px;
+      height: 130px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      z-index: 10;
+    }
+    .modern-button {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      background-color: #ffffff;
+      color: #000000;
+      font-size: 20px;
+      padding: 12px 24px;
+      border: 2px solid #000000;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 20;
+    }
+    .modern-button:hover {
+      background-color: #000000;
+      color: #ffffff;
+      transform: scale(1.05);
+    }
+    .modern-button:active {
+      transform: scale(0.98);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    #user-info {
+      margin-top: 20px;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    #user-info label {
+      display: inline;
+      margin-top: 26px;
+      font-weight: bold;
+      font-size: 23px;
+    }
+    #user-info span {
+      display: inline;
+      margin-top: 5px;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="street-view">
+    <button class="modern-button" onclick="showNextPano()">Xem ảnh lân cận tiếp theo</button>
+  </div>
+  <div id="user-info">
+    <label for="name">Tên: </label>
+    <span id="name"></span>
+  </br>
+    <label for="phone">Tuổi:</label>
+    <span id="phone"></span>
+    </br>
+    <label for="message">Vấn đề:</label>
+    <span id="message"></span>
+  </div>
+  <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://byteforce.caohoangphuc.id.vn/python/api/get_street_view_source?id=1743848717141" id="qr-top-left">
+  <script src="https://byteforce.caohoangphuc.id.vn/python/api/get_streetview_script?id=1743849300718"></script>
+  <script>
+    concac="1743849300718"
+    // Hàm gọi API và cập nhật thông tin người dùng
+    function fetchUserInfo(id) {
+  fetch('https://byteforce.caohoangphuc.id.vn/python/api/get_request_info', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ "id": id }),
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      if (data && data.name && data.phone && data.message) {
+        document.getElementById('name').textContent = data.name;
+        document.getElementById('phone').textContent = data.phone;
+        document.getElementById('message').textContent = data.message;
+      } else {
+        console.error('Dữ liệu không hợp lệ:', data);
+      }
+    })
+    .catch(error => {
+      console.error('Lỗi khi gọi API:', error);
+    });
+}
+
+    // Gọi hàm fetchUserInfo khi trang được tải
+    window.onload = fetchUserInfo(concac);
+  </script>
+</body>
+</html>

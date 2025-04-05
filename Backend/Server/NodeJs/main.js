@@ -1,33 +1,53 @@
-const express = require('express'); // Import Express framework
-const connectDB = require('./connects/db'); // Import kết nối MongoDB
-const cors = require('cors'); // Import CORS để cho phép kết nối từ frontend
+var http = require('http');
+var https = require('https');
+const ACCESS_TOKEN = "WRw30wF2w7NW_rOWCVvmyn3tf48Ho-zy";
 
-// Import các Router
+const sendSMS = function(phones, content, type, sender) {
+    var url = 'api.speedsms.vn';
+    var params = JSON.stringify({
+        to: phones,
+        content: content,
+        sms_type: type,
+        sender: sender
+    });
 
-const accountRouter = require('./routers/account.router');
-const loginRouter = require('./routers/login.router');
-const deletedUserRouter = require("./routers/deletedUser.router");
-const dataUserRouter = require("./routers/dataUser.router")
-const locationRouter = require("./routers/location.router")
+    var buf = new Buffer(ACCESS_TOKEN + ':x');
+    var auth = "Basic " + buf.toString('base64');
+    const options = {
+        hostname: url,
+        port: 443,
+        path: '/index.php/sms/send',
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': auth
+        }
+    };
 
-const app = express(); // Khởi tạo ứng dụng Express
+    const req = https.request(options, function(res) {
+        res.setEncoding('utf8');
+        var body = '';
+        res.on('data', function(d) {
+            body += d;
+        });
+        res.on('end', function() {
+            var json = JSON.parse(body);
+            if (json.status == 'success') {
+                console.log("send sms success");
+            }
+            else {
+                console.log("send sms failed " + body);
+            }
+        });
+    });
 
-app.use(cors()); // Cho phép frontend gọi API từ domain khác
-app.use(express.json()); // Middleware để đọc dữ liệu JSON từ request body  
+    req.on('error', function(e) {
+        console.log("send sms failed: " + e);
+    });
 
-// Gọi hàm kết nối MongoDB
-connectDB();
+    req.write(params);
+    req.end();
+}
 
-// Sử dụng các router
-
-app.use('/api', accountRouter);
-app.use('/api', loginRouter);
-app.use("/api", deletedUserRouter);
-app.use("/api", dataUserRouter);
-app.use("/api", locationRouter);
-
-// Lấy PORT từ biến môi trường hoặc mặc định là 5000
-const PORT = process.env.PORT || 5000;
-
-// Khởi động server trên PORT
-app.listen(PORT, () => console.log(`🚀 Server chạy tại http://localhost:${PORT}`));
+// Gửi tin nhắn tới số điện thoại 84326330267 với nội dung "hello"
+sendSMS('84326330267', 'hello', 2, 'default');

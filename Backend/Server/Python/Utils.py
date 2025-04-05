@@ -2,15 +2,21 @@ import re
 
 def remove_special_chars(text):
     return re.sub(r'[^a-zA-Z0-9\s]', '', text)  
+import json
 
 import os
 import sys
-import datetime
 import requests
 from PIL import Image
 import io
 import base64
+from datetime import datetime
+import math
+from bson import json_util, ObjectId
 data_path = "data/image/"
+def form_data(data):
+    return json.dumps(data,default=convert_mongo_types, ensure_ascii=False, indent=4)
+ 
 def Log(message):
     os.system("echo "+message)
 
@@ -97,3 +103,30 @@ def PILtoBase64(PIL_image):
     return img_base64
 def BinToBase64(BIN_image):
     return base64.b64encode(BIN_image).decode("utf-8")
+def convert_mongo_types(obj):
+    """Chuyển ObjectId & datetime thành string để JSON serializable"""
+    if isinstance(obj, ObjectId):
+        return str(obj)
+    if isinstance(obj, datetime):
+        return obj.isoformat()  # Chuyển datetime sang chuỗi
+    raise TypeError(f"Type {type(obj)} not serializable")
+def form_data(data):
+    return json.dumps(data,default=convert_mongo_types, ensure_ascii=False, indent=4)
+def haversine(lat1, lon1, lat2, lon2):
+    # Chuyển đổi độ sang radian
+    lat1, lon1, lat2, lon2 = map(math.radians, [lat1, lon1, lat2, lon2])
+
+    # Tính chênh lệch giữa các tọa độ
+    delta_lat = lat2 - lat1
+    delta_lon = lon2 - lon1
+
+    # Áp dụng công thức Haversine
+    a = math.sin(delta_lat / 2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(delta_lon / 2)**2
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+
+    # Bán kính Trái Đất (km)
+    R = 6371.0
+
+    # Khoảng cách giữa hai điểm
+    distance = R * c
+    return distance
