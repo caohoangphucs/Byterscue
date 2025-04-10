@@ -60,9 +60,10 @@ def get_recomment_aciton_rescuer():
             {form_data(all_request)}
             Đây là thông tin người cứu hộ:
             {form_data(rescuer_info)}
-            Hãy gợi í cho người cứu hộ 1 yêu cầu phù hợp nhất, sau đó hãy đưa ra tên, địa chỉ, tọa độ, 
-            vấn đề của yêu cầu đó và nhắc nhở người cứu hộ, trả lời ngắn gọn, giải thích ngắn gọn lý do chọn, không định dạng in đậm gì cả
-            dưới cùng kết hợp giữa 2 tọa độ để đưa 1 link google map dẫn tới đó, viết thành 1 đoạn văn, mỗi thông tin cách nhau 1 dấu .
+            Hãy gợi í cho người cứu hộ 2 yêu cầu phù hợp nhất, mỗi yêu cầu viết ra 2 trường như sau: 
+                - <Tên của người cần cứu hộ>, <Tại sao người cứu hộ này phù hợp với người gặp nạn này 
+                (ưu tiên theo phương tiện , skill, độ gần nhau ....)> (tại sao lại phù hợp), ngắn gọn và không giải thích gì thêm
+                Dài tầm 150 chữ là được
         """
         
         return grok.generate_grok_response("theo hướng dẫn:", context)
